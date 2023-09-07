@@ -98,7 +98,7 @@ class FrameBusqueda(tk.Frame):
                         if auxiliar:
                                 lista=[list(x) for x in auxiliar]
                                 titulo=f" Usuarios con nombre {nombre}"
-                                mensaje= "algunos usarios asociados al nombre {nombre} ingresado son \n"
+                                mensaje= f"algunos usarios asociados al nombre {nombre} ingresado son \n"
                                 for i in lista:
                                          mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ "   tiene asociado la cuenta "+str(i[1])+" \n"
                                 messagebox.showinfo(titulo,mensaje)
