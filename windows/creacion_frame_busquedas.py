@@ -2,8 +2,10 @@ import tkinter as tk
 from tkinter import ttk,END
 import re 
 from Procesamiento import procesar_dato_int,procesar_dato_str,procesar_dato_float
-from models.creditos_dao import buscar
+from models.cuentas_dao import buscar
 from tkinter import messagebox
+import sqlite3
+
 class FrameBusqueda(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -54,23 +56,28 @@ class FrameBusqueda(tk.Frame):
             
     def busqueda_dni(self,event):
          dni=procesar_dato_int(self.mi_busqueda_dni.get())
-         print (dni)
          if dni:
-                auxiliar=buscar ("dni",dni)
-                if auxiliar:
-                        lista=[list(x) for x in auxiliar]
-                        titulo=f" Usuarios con dni {dni}"
-                        mensaje= "algunos usarios asociados al "+str(dni)+ " ingresado son \n"
-                        for i in lista:
-                              mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ " tiene asociado la cuenta "+str(i[1])+" \n"
-                        messagebox.showinfo(titulo,mensaje)
-                        self.desahabilitar_busqueda_dni()
-                else:
+              try:  
+                        auxiliar=buscar ("dni",dni)
+                        if auxiliar:
+                                lista=[list(x) for x in auxiliar]
+                                titulo=f" Usuarios con dni {dni}"
+                                mensaje= "algunos usarios asociados al "+str(dni)+ " ingresado son \n"
+                                for i in lista:
+                                        mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ " tiene asociado la cuenta "+str(i[1])+" \n"
+                                messagebox.showinfo(titulo,mensaje)
+                                self.desahabilitar_busqueda_dni()
+                        else:
                       
-                      titulo="No se encontro dni"
-                      mensaje= f"el dni {dni} no tiene asociado ninguna cuenta" 
-                      messagebox.showerror(titulo,mensaje)
-                      self.desahabilitar_busqueda_dni()
+                             titulo="No se encontro dni"
+                             mensaje= f"el dni {dni} no tiene asociado ninguna cuenta" 
+                             messagebox.showerror(titulo,mensaje)
+                             self.desahabilitar_busqueda_dni()
+              except sqlite3.OperationalError:
+                       titulo="No se ingresar a la base de datos"
+                       mensaje= "La base de datos esta siendo ocupada o esta dañada, intente más tarde" 
+                       messagebox.showerror(titulo,mensaje)
+                       self.desahabilitar_busqueda_dni() 
          else: 
                 dni=self.mi_busqueda_dni.get()
                 titulo="No se ingreso un dato valido"
@@ -86,20 +93,27 @@ class FrameBusqueda(tk.Frame):
     def busqueda_nombre(self,event):
          nombre=self.mi_busqueda_nombre.get()
          if nombre !="":
-                auxiliar=buscar ("nombre",nombre)
-                if auxiliar:
-                        lista=[list(x) for x in auxiliar]
-                        titulo=f" Usuarios con nombre {nombre}"
-                        mensaje= "algunos usarios asociados al nombre {nombre} ingresado son \n"
-                        for i in lista:
-                              mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ " tiene asociado la cuenta "+str(i[1])+" \n"
-                        messagebox.showinfo(titulo,mensaje)
-                        self.desahabilitar_busqueda_nombre()
-                else: 
-                      titulo="No se encontro nombre"
-                      mensaje= f"el nombre {nombre} no tiene asociada ninguna cuenta" 
-                      messagebox.showerror(titulo,mensaje)
-                      self.desahabilitar_busqueda_nombre()
+                try:
+                        auxiliar=buscar ("nombre",nombre)
+                        if auxiliar:
+                                lista=[list(x) for x in auxiliar]
+                                titulo=f" Usuarios con nombre {nombre}"
+                                mensaje= "algunos usarios asociados al nombre {nombre} ingresado son \n"
+                                for i in lista:
+                                         mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ "   tiene asociado la cuenta "+str(i[1])+" \n"
+                                messagebox.showinfo(titulo,mensaje)
+                                self.desahabilitar_busqueda_nombre()
+                        else: 
+                                titulo="No se encontro nombre"
+                                mensaje= f"el nombre {nombre} no tiene asociada ninguna cuenta" 
+                                messagebox.showerror(titulo,mensaje)
+                                self.desahabilitar_busqueda_nombre()
+                except sqlite3.OperationalError:
+                       titulo="No se ingresar a la base de datos"
+                       mensaje= "La base de datos esta siendo ocupada o esta dañada, intente más tarde" 
+                       messagebox.showerror(titulo,mensaje)
+                       self.desahabilitar_busqueda_nombre()
+                       
          else:
               titulo="No ingreso nombre"
               mensaje= "Se envio el campo vacío" 

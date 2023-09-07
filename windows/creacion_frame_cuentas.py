@@ -3,6 +3,9 @@ from tkinter import ttk
 from tkinter import messagebox
 from Procesamiento import procesar_dato_int,procesar_dato_str,procesar_dato_float
 from windows.creacion_frame_busquedas import FrameBusqueda
+from models.cuentas_dao import verifica_dni,max_cuenta,carga_nueva_cuenta
+from models.models import Cuenta
+import sqlite3
 
 class FrameCuentaNueva(FrameBusqueda):
     def __init__(self, parent):
@@ -58,11 +61,14 @@ class FrameCuentaNueva(FrameBusqueda):
         self.entry_domicilio.grid(row=8,column=1,padx=10,pady=10,columnspan=2)
 
 
-    
-
-        self.boton_habilita_nombre=tk.Button(self,text="Habilitar busqueda por Nombre",command="self.habilita_busqueda_nombre")
+        self.boton_habilita_nombre=tk.Button(self,text="Habilitar Carga de datos",command=self.habilitar_campos_cuenta_nueva)
         self.boton_habilita_nombre.config(width=25,font=('Arial',12,'bold'),fg='#DAD5D6',bg='#158645',cursor='pirate',activebackground='#35BD6F')
         self.boton_habilita_nombre.grid(row=9,column=2,padx=10,pady=10)
+
+        self.entry_nombre.bind ("<Return>",self.guradar_datos_cuenta_nueva)
+        self.entry_dni.bind ("<Return>",self.guradar_datos_cuenta_nueva)
+        self.entry_telefono.bind ("<Return>",self.guradar_datos_cuenta_nueva)
+        self.entry_domicilio.bind ("<Return>",self.guradar_datos_cuenta_nueva)
         self._frame = None
 
     def desahabilitar_campos_cuenta_nueva(self):
@@ -76,7 +82,68 @@ class FrameCuentaNueva(FrameBusqueda):
         self.entry_telefono.config(state='disabled')
         self.entry_domicilio.config(state='disabled')
         
+    def habilitar_campos_cuenta_nueva(self):
+        self.entry_nombre.config(state='normal')
+        self.entry_dni.config(state='normal')
+        self.entry_telefono.config(state='normal')
+        self.entry_domicilio.config(state='normal')
         
-        
+    def  guradar_datos_cuenta_nueva(self,event):
+        self.desahabilitar_busqueda_dni()
+        self.desahabilitar_busqueda_nombre()
+        nombre=self.mi_nombre.get()
+        dni=self.mi_dni.get()
+        telefono=self.mi_telefono.get()
+        domicilio=self.mi_domicilio.get()
+        if nombre!="" and dni!="":
+            dni=procesar_dato_int(dni)
+            if dni:
+                try:
+                    dni_vericado=verifica_dni(dni)
+                
+                    if dni_vericado==None:
+                        
+                            cuenta_numero=max_cuenta()
+                            if telefono=="":
+                                 telefono="no lo tenemos"
+                            if domicilio=="":
+                                 domicilio="no lo tenemos"
+                            Cuenta_Nueva=Cuenta(cuenta_numero,
+                                                nombre,
+                                                dni,
+                                                domicilio,
+                                                telefono)
+                            
+                            carga_nueva_cuenta(Cuenta_Nueva)
+                            titulo="Carga exitosa"
+                            mensaje= f"el dni {dni} se cargo de manera exitosa" 
+                            messagebox.showinfo(titulo,mensaje)
+                            self.desahabilitar_campos_cuenta_nueva()
+                          
+                    
+                    else:
+                            cuenta=list (dni_vericado)
+                            titulo="Error por dato ya existent"
+                            mensaje= f"el dni {dni} ya esta registrado con la cuenta {cuenta[0]}" 
+                            messagebox.showerror(titulo,mensaje)
+                            self.desahabilitar_campos_cuenta_nueva()
+                except sqlite3.OperationalError:
+                                titulo="No se ingresar a la base de datos"
+                                mensaje= "La base de datos esta siendo ocupada o esta dañada, intente más tarde" 
+                                messagebox.showerror(titulo,mensaje)
+                                self.desahabilitar_campos_cuenta_nueva()
+      
+
+            else:
+                dni=self.mi_dni.get()
+                titulo="Error por dato no valido"
+                mensaje= f"el dato {dni} no es valido como dni" 
+                messagebox.showerror(titulo,mensaje)
+                self.desahabilitar_campos_cuenta_nueva()
+        else:
+            titulo="Error por falta de datos importantes"
+            mensaje= "Los campos de nombre, dni o ambos estan vacíos, no se puede cargar usuario sin ellos" 
+            messagebox.showerror(titulo,mensaje)
+            self.desahabilitar_campos_cuenta_nueva()
 
 

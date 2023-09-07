@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from Procesamiento import procesar_dato_str,procesar_dato_int
-from models.creditos_dao import buscar_dni,cargar_afiliado
+from models.cuentas_dao import buscar_dni,cargar_afiliado
 from models.models import Afiliados
   
 class FrameUser(tk.Frame):
