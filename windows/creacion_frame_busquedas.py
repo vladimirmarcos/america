@@ -7,7 +7,6 @@ from tkinter import messagebox
 class FrameBusqueda(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        self.pack(fill=tk.BOTH, expand=tk.YES)
         self.campos_busquedas()
         self.desahabilitar_busqueda_dni()
         self.desahabilitar_busqueda_nombre()
@@ -26,7 +25,7 @@ class FrameBusqueda(tk.Frame):
 
         self.boton_habilita_dni=tk.Button(self,text="Habilitar busqueda por DNI",command=self.habilita_busqueda_dni)
         self.boton_habilita_dni.config(width=25,font=('Arial',12,'bold'),fg='#DAD5D6',bg='#158645',cursor='pirate',activebackground='#35BD6F')
-        self.boton_habilita_dni.grid(row=1,column=3,padx=10,pady=10)
+        self.boton_habilita_dni.grid(row=1,column=2,padx=10,pady=10)
 
         self.entry_busqueda_dni.bind ("<Return>",self.busqueda_dni)
 
@@ -43,7 +42,7 @@ class FrameBusqueda(tk.Frame):
 
         self.boton_habilita_nombre=tk.Button(self,text="Habilitar busqueda por Nombre",command=self.habilita_busqueda_nombre)
         self.boton_habilita_nombre.config(width=25,font=('Arial',12,'bold'),fg='#DAD5D6',bg='#158645',cursor='pirate',activebackground='#35BD6F')
-        self.boton_habilita_nombre.grid(row=4,column=3,padx=10,pady=10)
+        self.boton_habilita_nombre.grid(row=3,column=2,padx=10,pady=10)
 
         self.entry_busqueda_nombre.bind ("<Return>",self.busqueda_nombre)
         self._frame = None

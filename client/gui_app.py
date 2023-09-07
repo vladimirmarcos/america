@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from windows.creacion_frame_busquedas import FrameBusqueda
+from windows.creacion_frame_cuentas import FrameCuentaNueva
 #from windows.creacion_frame_ordenes_compras import FrameOrdenAmepp
 class App(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -11,16 +11,16 @@ class App(tk.Frame):
         
         self.menu_cuentas= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Cuentas", menu=self.menu_cuentas)
-        self.menu_cuentas.add_command(label="Crear Nueva Cuenta",command=self.busqueda)
+        self.menu_cuentas.add_command(label="Crear Nueva Cuenta",command=self.cuenta_nueva_para_creditos)
         #self.menu_afiliados.add_command(label="Agregar afiliados Adepp",command=self.Crear_Afiliado_Adepp)
         parent.config(menu=self.menu)
         self._frame = None
-    def busqueda(self):
+    def cuenta_nueva_para_creditos(self):
             if self._frame is not None:
                self._frame.borrar()
                self._frame = None
             if self._frame is None:
-               self._frame = FrameBusqueda(self)
+               self._frame = FrameCuentaNueva(self)
 '''
         self.menu_ordenes_compra = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Ordenes de compra",menu=self.menu_ordenes_compra)
