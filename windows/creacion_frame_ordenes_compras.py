@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from Procesamiento import procesar_dato_int,procesar_dato_str,procesar_dato_float
-from models.afiliados_dao import buscar_dni
+from models.creditos_dao import buscar_dni
 from models.models import OrdenCompra
 from models.orden_credito_dao import consulta_ordenes_Compra
 class FrameOrdenCompra(tk.Frame):

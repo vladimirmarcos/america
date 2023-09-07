@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import ttk
-from ttkwidgets import AutocompleteEntry
+from tkinter import ttk,END
+import re 
 from Procesamiento import procesar_dato_int,procesar_dato_str,procesar_dato_float
-
-
+from models.creditos_dao import buscar
+from tkinter import messagebox
 class FrameBusqueda(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -12,6 +12,7 @@ class FrameBusqueda(tk.Frame):
         self.desahabilitar_busqueda_dni()
         self.desahabilitar_busqueda_nombre()
         
+
     def campos_busquedas(self):
        #busqueda dni
         self.label_busqueda_dni=tk.Label(self,text='Busqueda Por DNI')
@@ -53,9 +54,30 @@ class FrameBusqueda(tk.Frame):
             self.entry_busqueda_dni.config(state='disabled')
             
     def busqueda_dni(self,event):
-         dni=self.mi_busqueda_dni.get()
-         print(dni)
-         self.desahabilitar_busqueda_dni()
+         dni=procesar_dato_int(self.mi_busqueda_dni.get())
+         print (dni)
+         if dni:
+                auxiliar=buscar ("dni",dni)
+                if auxiliar:
+                        lista=[list(x) for x in auxiliar]
+                        titulo=f" Usuarios con dni {dni}"
+                        mensaje= "algunos usarios asociados al "+str(dni)+ " ingresado son \n"
+                        for i in lista:
+                              mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ " tiene asociado la cuenta "+str(i[1])+" \n"
+                        messagebox.showinfo(titulo,mensaje)
+                        self.desahabilitar_busqueda_dni()
+                else:
+                      
+                      titulo="No se encontro dni"
+                      mensaje= f"el dni {dni} no tiene asociado ninguna cuenta" 
+                      messagebox.showerror(titulo,mensaje)
+                      self.desahabilitar_busqueda_dni()
+         else: 
+                dni=self.mi_busqueda_dni.get()
+                titulo="No se ingreso un dato valido"
+                mensaje= f"el dato {dni} es invalido como dni" 
+                messagebox.showerror(titulo,mensaje)
+                self.desahabilitar_busqueda_dni()
     def habilita_busqueda_nombre(self):
             self.entry_busqueda_nombre.config(state='normal')
     def desahabilitar_busqueda_nombre(self):
@@ -64,8 +86,26 @@ class FrameBusqueda(tk.Frame):
             
     def busqueda_nombre(self,event):
          nombre=self.mi_busqueda_nombre.get()
-         
-         self.desahabilitar_busqueda_nombre()
+         if nombre !="":
+                auxiliar=buscar ("nombre",nombre)
+                if auxiliar:
+                        lista=[list(x) for x in auxiliar]
+                        titulo=f" Usuarios con nombre {nombre}"
+                        mensaje= "algunos usarios asociados al nombre {nombre} ingresado son \n"
+                        for i in lista:
+                              mensaje=mensaje+"usuario con nombre "+ str(i[2])+ " dni "+ str(i[0])+ " tiene asociado la cuenta "+str(i[1])+" \n"
+                        messagebox.showinfo(titulo,mensaje)
+                        self.desahabilitar_busqueda_nombre()
+                else: 
+                      titulo="No se encontro nombre"
+                      mensaje= f"el nombre {nombre} no tiene asociada ninguna cuenta" 
+                      messagebox.showerror(titulo,mensaje)
+                      self.desahabilitar_busqueda_nombre()
+         else:
+              titulo="No ingreso nombre"
+              mensaje= "Se envio el campo vacío" 
+              messagebox.showerror(titulo,mensaje)
+              self.desahabilitar_busqueda_nombre() 
     def borrar(self):
         self.pack_forget()
         self.destroy()
