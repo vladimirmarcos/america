@@ -9,9 +9,9 @@ class App(tk.Frame):
         self.menu = tk.Menu(parent)
         
         
-        self.menu_afiliados= tk.Menu(self.menu, tearoff=0)
-        self.menu.add_cascade(label="Afiliados", menu=self.menu_afiliados)
-        self.menu_afiliados.add_command(label="Busqueda",command=self.busqueda)
+        self.menu_cuentas= tk.Menu(self.menu, tearoff=0)
+        self.menu.add_cascade(label="Cuentas", menu=self.menu_cuentas)
+        self.menu_cuentas.add_command(label="Crear Nueva Cuenta",command=self.busqueda)
         #self.menu_afiliados.add_command(label="Agregar afiliados Adepp",command=self.Crear_Afiliado_Adepp)
         parent.config(menu=self.menu)
         self._frame = None
