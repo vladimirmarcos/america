@@ -1,0 +1,26 @@
+CREATE TABLE "cuentas" (
+	"cuenta_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"cuenta"	INTEGER NOT NULL,
+	"nombre"	TEXT,
+	"dni"	INTEGER NOT NULL,
+	"contacto_telefono"	TEXT,
+	"contacto_direccion"	TEXT
+);
+
+
+
+CREATE TABLE "creditos" (
+	"credito"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"cuenta"	INTEGER NOT NULL,
+	"producto"	TEXT NOT NULL,
+	"monto_financiado"	REAL NOT NULL,
+	"monto_credito"	REAL NOT NULL,
+	"fecha"	TEXT NOT NULL,
+	"estado"	INTEGER NOT NULL,
+	"calificacion"	TEXT NOT NULL
+);
+
+CREATE TABLE "montos" (
+	"monto_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"valor"	REAL NOT NULL
+);
