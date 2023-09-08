@@ -126,12 +126,12 @@ class FrameCuentaNueva(FrameBusqueda):
                             titulo="Error por dato ya existent"
                             mensaje= f"el dni {dni} ya esta registrado con la cuenta {cuenta[0]}" 
                             messagebox.showerror(titulo,mensaje)
-                            self.desahabilitar_campos_cuenta_nueva()
+                            #self.desahabilitar_campos_cuenta_nueva()
                 except sqlite3.OperationalError:
                                 titulo="No se ingresar a la base de datos"
                                 mensaje= "La base de datos esta siendo ocupada o esta dañada, intente más tarde" 
                                 messagebox.showerror(titulo,mensaje)
-                                self.desahabilitar_campos_cuenta_nueva()
+                                #self.desahabilitar_campos_cuenta_nueva()
       
 
             else:
@@ -139,12 +139,12 @@ class FrameCuentaNueva(FrameBusqueda):
                 titulo="Error por dato no valido"
                 mensaje= f"el dato {dni} no es valido como dni" 
                 messagebox.showerror(titulo,mensaje)
-                self.desahabilitar_campos_cuenta_nueva()
+                #self.desahabilitar_campos_cuenta_nueva()
         else:
             titulo="Error por falta de datos importantes"
             mensaje= "Los campos de nombre, dni o ambos estan vacíos, no se puede cargar usuario sin ellos" 
             messagebox.showerror(titulo,mensaje)
-            self.desahabilitar_campos_cuenta_nueva()
+            #self.desahabilitar_campos_cuenta_nueva()
 
 
 
@@ -241,6 +241,11 @@ class FrameModificarCuenta(FrameBusqueda):
                 messagebox.showerror(titulo,mensaje)
                 self.desahabilitar_campos_nuevos_cuenta()  
                 return
-
+         
+         if (nombre!=""):
+              self.dato_a_modificar(nombre,0)
          self.desahabilitar_campos_nuevos_cuenta()  
                 
+    def dato_a_modificar(self,dato,flag):
+         if flag==0:
+              pass

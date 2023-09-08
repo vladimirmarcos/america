@@ -1,5 +1,5 @@
 from .conexion_db import ConexionDB
-
+import sqlite3
 
 def buscar(valor1,valor2):
     conexion=ConexionDB()
@@ -38,6 +38,18 @@ def carga_nueva_cuenta(Cuenta):
     conexion.cerrar()
 
 
-
-
+def verifica_cuenta(cuenta):
+    try:
+        conexion=ConexionDB()
+        sql=f""" SELECT cuenta from cuentas WHERE cuenta={cuenta}"""   
+        conexion.cursor.execute(sql)
+        datos=conexion.cursor.fetchone()
+        conexion.cerrar()
+        datos=list(datos)
+        datos=datos[0]
+        return datos
+    except sqlite3.OperationalError:
+        return "no se pudo abrir la base de datos intente más tarde"
+    except TypeError:
+        return None
     
