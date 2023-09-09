@@ -1,10 +1,13 @@
+
 CREATE TABLE "cuentas" (
 	"cuenta_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	"cuenta"	INTEGER NOT NULL,
 	"nombre"	TEXT,
 	"dni"	INTEGER NOT NULL,
 	"contacto_telefono"	TEXT,
-	"contacto_direccion"	TEXT
+	"contacto_direccion"	TEXT,
+	"direccion_trabajo"	TEXT,
+	"funcion"	TEXT
 );
 
 

@@ -3,7 +3,7 @@ import sqlite3
 
 def buscar(valor1,valor2):
     conexion=ConexionDB()
-    sql=f""" SELECT dni,cuenta,nombre from cuentas WHERE {valor1} like '%{valor2}%'"""
+    sql=f""" SELECT dni,cuenta,nombre,contacto_direccion from cuentas WHERE {valor1} like '%{valor2}%'"""
     conexion.cursor.execute(sql)
     datos=conexion.cursor.fetchall()
     conexion.cerrar()
@@ -29,14 +29,15 @@ def max_cuenta():
     return id_cuenta[0]
 
 def carga_nueva_cuenta(Cuenta):
-    
-    conexion=ConexionDB()
-    sql=f"""INSERT INTO cuentas (cuenta,nombre,dni,contacto_telefono,contacto_direccion)
-    VALUES ('{Cuenta.numero_cuenta}','{Cuenta.nombre}','{Cuenta.dni}','{Cuenta.domicilio}','{Cuenta.telefono}')
+    try:
+        conexion=ConexionDB()
+        sql=f"""INSERT INTO cuentas (cuenta,nombre,dni,contacto_telefono,contacto_direccion,direccion_trabajo,funcion)
+        VALUES ('{Cuenta.numero_cuenta}','{Cuenta.nombre}','{Cuenta.dni}','{Cuenta.domicilio}','{Cuenta.telefono}','{Cuenta.domicilio_trabajo}','{Cuenta.funcion}')
     """   
-    conexion.cursor.execute(sql)
-    conexion.cerrar()
-
+        conexion.cursor.execute(sql)
+        conexion.cerrar()
+    except:
+        print ("no se guardo")
 
 def verifica_cuenta(cuenta):
     try:
@@ -53,3 +54,13 @@ def verifica_cuenta(cuenta):
     except TypeError:
         return None
     
+
+def buscar_nombre(cuenta):
+        conexion=ConexionDB()
+        sql=f""" SELECT nombre from cuentas WHERE cuenta={cuenta}"""   
+        conexion.cursor.execute(sql)
+        datos=conexion.cursor.fetchone()
+        conexion.cerrar()
+        datos=list(datos)
+        datos=datos[0]
+        return datos
