@@ -162,6 +162,7 @@ class FrameCreditoNuevo(FrameCredito):
         def genera_nuevo_credito(self,event):
              
              self.desahabilitar_busqueda_nombre()
+             self.habilitar_busqueda_nombre()
              
              
              cuenta=procesar_dato_int(self.mi_cuenta.get())
@@ -269,13 +270,11 @@ class FrameCreditoNuevo(FrameCredito):
                                           self.Nuevo_credito.monto_financiado/self.Nuevo_credito.cuotas,
                                           "Por Pagar",
                                           numero_credito,
-                                          self.Nuevo_credito.cuenta)
+                                          self.Nuevo_credito.anticipo,
+                                          self.Nuevo_credito.anticipo)
 
                 gravar_fechas(fechas)
                 for i in range (self.Nuevo_credito.cuotas-1):
-                    print (i)
-                    
-                    
                     auxiliar= auxiliar+dia_delta
                     fecha_vencimiento=datetime.datetime.strftime(auxiliar,"%Y/%m/%d")
                     

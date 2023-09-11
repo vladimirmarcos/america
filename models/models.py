@@ -27,7 +27,7 @@ class Creditos:
         return f'Creditos[{self.cuenta},{self.cuotas},{self.producto},{self.monto_financiado},{self.anticipo},{self.fecha},{self.estado},{self.calificacion}]'
      
 class Fechas_Vencimiento:
-    def __init__(self,fecha,monto_base,total,estado,credito,acuenta):
+    def __init__(self,fecha,monto_base,total,estado,credito,acuenta,pagado):
         self.id_fecha=None
         self.fecha=fecha
         self.monto_base=monto_base
@@ -36,6 +36,7 @@ class Fechas_Vencimiento:
         self.estado=estado
         self.credito=credito
         self.a_cuenta=acuenta
+        self.pagado=pagado
         
     def __str__(self):
-        return f'Creditos[{self.fecha},{self.monto_base},{self.intereses},{self.total},{self.estado},{self.credito},{self.a_cuenta}]'
+        return f'Creditos[{self.fecha},{self.monto_base},{self.intereses},{self.total},{self.estado},{self.credito},{self.a_cuenta},{self.pagado}]'
