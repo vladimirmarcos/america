@@ -11,5 +11,13 @@ def buscar_moratoria():
     id_cuenta=conexion.cursor.fetchall()
     conexion.cerrar() 
     id_cuenta=list(id_cuenta[0])
-    print (id_cuenta)
     return id_cuenta[0]
+
+def buscar_informacion_cuota(credito):
+    conexion=ConexionDB()
+    sql=f"""SELECT  fecha_id,monto,fecha from fechas_pagos where credito={credito} and pagado=0 and estado='Por Pagar' """
+    conexion.cursor.execute(sql)
+    informacion=conexion.cursor.fetchone()
+    conexion.cerrar() 
+    informacion=list(informacion)
+    return informacion

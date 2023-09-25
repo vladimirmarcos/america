@@ -36,6 +36,8 @@ def procesar_dato_int(dato):
         dato=int(dato)
         return dato
      except ValueError:
+          if dato=='p' or dato=='P':
+           return dato
           return None
      
 def procesar_dato_float(dato):
