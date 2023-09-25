@@ -57,10 +57,9 @@ def verifica_cuenta(cuenta):
 
 def buscar_nombre(cuenta):
         conexion=ConexionDB()
-        sql=f""" SELECT nombre from cuentas WHERE cuenta={cuenta}"""   
+        sql=f""" SELECT nombre,dni from cuentas WHERE cuenta={cuenta}"""   
         conexion.cursor.execute(sql)
         datos=conexion.cursor.fetchone()
         conexion.cerrar()
         datos=list(datos)
-        datos=datos[0]
         return datos

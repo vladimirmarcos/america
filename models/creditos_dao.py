@@ -54,8 +54,8 @@ def total_credito(cuenta):
 
 def gravar_fechas(Fechas_Vencimiento):
     conexion=ConexionDB()
-    sql=f"""INSERT INTO fechas_pagos (fecha,monto_base,intereses,total,estado,credito,a_cuenta,pagado)
-        VALUES ('{Fechas_Vencimiento.fecha}','{Fechas_Vencimiento.monto_base}','{Fechas_Vencimiento.intereses}','{Fechas_Vencimiento.total}','{Fechas_Vencimiento.estado}','{Fechas_Vencimiento.credito}','{Fechas_Vencimiento.a_cuenta}',{Fechas_Vencimiento.pagado})
+    sql=f"""INSERT INTO fechas_pagos (fecha,monto,estado,credito,a_cuenta,pagado)
+        VALUES ('{Fechas_Vencimiento.fecha}','{Fechas_Vencimiento.monto}','{Fechas_Vencimiento.estado}','{Fechas_Vencimiento.credito}','{Fechas_Vencimiento.a_cuenta}',{Fechas_Vencimiento.pagado})
     
         """
     conexion.cursor.execute(sql)

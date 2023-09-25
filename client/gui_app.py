@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 from windows.creacion_frame_cuentas import FrameCuentaNueva,FrameModificarCuenta
-from windows.creacion_frama_creditos import FrameCreditoNuevo
+from windows.creacion_frame_creditos import FrameCredito
 from windows.creacion_frame_pagos import Framepago
+from windows.creacion_frame_creditos_historicos import FrameCreditoHistoricos
+
 #from windows.creacion_frame_ordenes_compras import FrameOrdenAmepp
 class App(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -20,6 +22,7 @@ class App(tk.Frame):
         self.menu_creditos= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Creditos", menu=self.menu_creditos)
         self.menu_creditos.add_command(label="Crear Nuevo Credito",command=self.crear_nuevo_credito)
+        self.menu_creditos.add_command(label="Cargar Credito historico",command=self.crear_credito_historico)
 
         self.menu_pagos= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Pagos", menu=self.menu_pagos)
@@ -48,7 +51,14 @@ class App(tk.Frame):
                self._frame.borrar()
                self._frame = None
             if self._frame is None:
-               self._frame = FrameCreditoNuevo(self)
+               self._frame = FrameCredito(self)
+
+    def crear_credito_historico(self):
+            if self._frame is not None:
+               self._frame.borrar()
+               self._frame = None
+            if self._frame is None:
+               self._frame = FrameCreditoHistoricos(self)
 
     def generar_pago(self):
             if self._frame is not None:

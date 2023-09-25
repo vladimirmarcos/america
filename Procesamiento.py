@@ -44,3 +44,10 @@ def procesar_dato_float(dato):
         return dato
      except ValueError:
           return None
+
+def procesar_dato_fecha(dato):
+     proximo_vencimiento=list(dato)
+     proximo_vencimiento.insert(4,"-")
+     proximo_vencimiento.insert(7,"-")
+     proximo_vencimiento = ''.join(map(str, proximo_vencimiento))
+     return proximo_vencimiento
