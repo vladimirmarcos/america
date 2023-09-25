@@ -62,3 +62,38 @@ def gravar_fechas(Fechas_Vencimiento):
     conexion.cerrar() 
 
 
+def buscar_credito(credito):
+     conexion=ConexionDB()
+     sql=f""" SELECT credito,cuotas,producto from creditos where credito={credito}"""   
+     conexion.cursor.execute(sql)
+     credito_encontrado=conexion.cursor.fetchone()
+     conexion.cerrar()
+     try: 
+        credito_encontrado=list(credito_encontrado)
+        return credito_encontrado
+     except:
+          return None
+     
+def buscar_faltante_pagar(credito):
+     conexion=ConexionDB()
+     sql=f"SELECT fecha,monto,pagado from fechas_pagos where credito={credito} and estado='Por Pagar'"
+     conexion.cursor.execute(sql)
+     resto_pagar=conexion.cursor.fetchall()
+     conexion.cerrar()
+     j=0
+     for i in resto_pagar:
+          resto_pagar[j]=list(resto_pagar[j])
+          j=j+1
+     return resto_pagar
+
+def eliminar_credito(credito):
+     conexion=ConexionDB()
+     sql=f""" update creditos set estado=0 WHERE credito={credito}
+    """
+     conexion.cursor.execute(sql)
+     conexion.cerrar()
+     conexion=ConexionDB()
+     sql=f""" update fechas_pagos set estado='Eliminado' WHERE credito={credito}
+    """
+     conexion.cursor.execute(sql)
+     conexion.cerrar()

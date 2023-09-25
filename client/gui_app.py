@@ -4,6 +4,7 @@ from windows.creacion_frame_cuentas import FrameCuentaNueva,FrameModificarCuenta
 from windows.creacion_frame_creditos import FrameCredito
 from windows.creacion_frame_pagos import Framepago
 from windows.creacion_frame_creditos_historicos import FrameCreditoHistoricos
+from windows.creacion_frame_elimar_creditos import FrameEliminaCuenta
 
 #from windows.creacion_frame_ordenes_compras import FrameOrdenAmepp
 class App(tk.Frame):
@@ -23,6 +24,7 @@ class App(tk.Frame):
         self.menu.add_cascade(label="Creditos", menu=self.menu_creditos)
         self.menu_creditos.add_command(label="Crear Nuevo Credito",command=self.crear_nuevo_credito)
         self.menu_creditos.add_command(label="Cargar Credito historico",command=self.crear_credito_historico)
+        self.menu_creditos.add_command(label="Eliminar Credito",command=self.elimar_credito)
 
         self.menu_pagos= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Pagos", menu=self.menu_pagos)
@@ -66,6 +68,13 @@ class App(tk.Frame):
                self._frame = None
             if self._frame is None:
                self._frame = Framepago(self)
+
+    def elimar_credito(self):
+            if self._frame is not None:
+               self._frame.borrar()
+               self._frame = None
+            if self._frame is None:
+               self._frame = FrameEliminaCuenta(self)
 '''
         self.menu_ordenes_compra = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Ordenes de compra",menu=self.menu_ordenes_compra)
