@@ -2,22 +2,25 @@ import tkinter as tk
 from models.cuentas_dao import buscar
 from tkinter import messagebox
 import sqlite3
+from models.pagos_dao import buscar_moratoria
 
-class FrameBusqueda(tk.Frame):
+class FrameActualizarMora(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        self.campos_busquedas()
+        self.pack(fill=tk.BOTH, expand=tk.YES)
+        
         self.habilitar_opciones()
         
     def campos_busquedas(self):
        #busqueda nombre 
+        self.moratoria_base=buscar_moratoria()
         self.label_opciones=tk.Label(self,text='Opciones')
         self.label_opciones.config(font=('Arial',12,'bold'))
         self.label_opciones.grid(row=0,column=1,pady=10)
 
-        self.label_busqueda_nombre=tk.Label(self,text='Busqueda por nombre')
-        self.label_busqueda_nombre.config(font=('Arial',12,'bold'))
-        self.label_busqueda_nombre.grid(row=15,column=1,pady=10)
+        self.label_nuevo_valor_mora=tk.Label(self,text='Nuevo valor de Mora')
+        self.label_nuevo_valor_mora.config(font=('Arial',12,'bold'))
+        self.label_nuevo_valor_mora.grid(row=1,column=0,pady=10)
 
         self.mi_opciones=tk.StringVar()
         self.entry_opciones=tk.Entry(self,textvariable=self.mi_opciones)
@@ -87,5 +90,5 @@ class FrameBusqueda(tk.Frame):
               messagebox.showerror(titulo,mensaje)
               
     def borrar(self):
-        self.pack_forget()
-        self.destroy()
+          self.pack_forget()
+          self.destroy()

@@ -1,5 +1,6 @@
 import tkinter as tk
 from client.gui_app import App
+from models.general_dao import actualizar_intereses
 
 def main():
     ventana = tk.Tk()
@@ -9,5 +10,5 @@ def main():
 
 
 if __name__=='__main__':
-   
+    actualizar_intereses()
     main()

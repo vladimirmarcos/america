@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from windows.creacion_frame_cuentas import FrameCuentaNueva,FrameModificarCuenta
-from windows.creacion_frame_creditos import FrameCredito
+from windows.creacion_frame_creditos import FrameCreditoNuevo
 from windows.creacion_frame_pagos import Framepago
 from windows.creacion_frame_creditos_historicos import FrameCreditoHistoricos
 from windows.creacion_frame_elimar_creditos import FrameEliminaCuenta
+from windows.creacion_freme_pagos_historicos import FramepagoHistorico
+from windows.creacion_frame_judiciales import FrameEnviarJudiciales
 
 #from windows.creacion_frame_ordenes_compras import FrameOrdenAmepp
 class App(tk.Frame):
@@ -17,7 +19,7 @@ class App(tk.Frame):
         self.menu_cuentas= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Cuentas", menu=self.menu_cuentas)
         self.menu_cuentas.add_command(label="Crear Nueva Cuenta",command=self.cuenta_nueva_para_creditos)
-        self.menu_cuentas.add_command(label="Modificar Datos en cuentas",command=self.modificar_datos)
+        #self.menu_cuentas.add_command(label="Modificar Datos en cuentas",command=self.modificar_datos)
         parent.config(menu=self.menu)
 
         self.menu_creditos= tk.Menu(self.menu, tearoff=0)
@@ -25,11 +27,18 @@ class App(tk.Frame):
         self.menu_creditos.add_command(label="Crear Nuevo Credito",command=self.crear_nuevo_credito)
         self.menu_creditos.add_command(label="Cargar Credito historico",command=self.crear_credito_historico)
         self.menu_creditos.add_command(label="Eliminar Credito",command=self.elimar_credito)
+        
+        #self.menu_creditos.add_command(label="Enviar a Judciales",command=self.enviar_judiciales)
 
         self.menu_pagos= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Pagos", menu=self.menu_pagos)
-        self.menu_pagos.add_command(label="Crear Nuevo Credito",command=self.generar_pago)
+        self.menu_pagos.add_command(label="Pago",command=self.generar_pago)
+        self.menu_pagos.add_command(label="Pago Historico",command=self.generar_pago_historico)
         #self.menu_cuentas.add_command(label="Modificar Datos en cuentas",command=self.modificar_datos)
+
+        self.configuracion= tk.Menu(self.menu, tearoff=0)
+        self.menu.add_cascade(label="Configuracion", menu=self.configuracion)
+        self.configuracion.add_command(label="Actualizar Mora",command="self.generar_pago")
         parent.config(menu=self.menu)
 
 
@@ -53,7 +62,7 @@ class App(tk.Frame):
                self._frame.borrar()
                self._frame = None
             if self._frame is None:
-               self._frame = FrameCredito(self)
+               self._frame = FrameCreditoNuevo(self)
 
     def crear_credito_historico(self):
             if self._frame is not None:
@@ -68,6 +77,13 @@ class App(tk.Frame):
                self._frame = None
             if self._frame is None:
                self._frame = Framepago(self)
+    
+    def generar_pago_historico(self):
+            if self._frame is not None:
+               self._frame.borrar()
+               self._frame = None
+            if self._frame is None:
+               self._frame = FramepagoHistorico(self)
 
     def elimar_credito(self):
             if self._frame is not None:
@@ -75,6 +91,14 @@ class App(tk.Frame):
                self._frame = None
             if self._frame is None:
                self._frame = FrameEliminaCuenta(self)
+
+    def enviar_judiciales(self):
+            if self._frame is not None:
+               self._frame.borrar()
+               self._frame = None
+            if self._frame is None:
+               self._frame = FrameEnviarJudiciales(self)
+    
 '''
         self.menu_ordenes_compra = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Ordenes de compra",menu=self.menu_ordenes_compra)

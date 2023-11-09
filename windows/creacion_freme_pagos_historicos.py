@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from  tkcalendar import DateEntry
 from Procesamiento import procesar_dato_int,procesar_dato_fecha,procesar_dato_float,procesar_dato_str,procesar_cuota
 from windows.creacion_frame_busquedas import FrameBusqueda 
 from models.models import Pagos
@@ -11,7 +12,7 @@ from models.pagos_dao import buscar_primera_cuota,buscar_cuota, actualizo_credit
 import datetime
 
 
-class Framepago(FrameBusqueda):
+class FramepagoHistorico(FrameBusqueda):
     def __init__(self, parent):
         super().__init__(parent)
         self.pack(fill=tk.BOTH, expand=tk.YES)
@@ -25,7 +26,6 @@ class Framepago(FrameBusqueda):
     def campos_pagos(self):
         #label de campos
         self.moratoria_base=buscar_moratoria()
-
         self.label_numero_credito=tk.Label(self,text='Numero Credito')
         self.label_numero_credito.config(font=('Arial',12,'bold'))
         self.label_numero_credito.grid(row=1,column=0,padx=10,pady=10)
@@ -34,14 +34,18 @@ class Framepago(FrameBusqueda):
         self.label_moratoria.config(font=('Arial',12,'bold'))
         self.label_moratoria.grid(row=2,column=0,padx=10,pady=10)
 
+        self.label_fecha_pago=tk.Label(self,text='Fecha de emisión pago')
+        self.label_fecha_pago.config(font=('Arial',12,'bold'))
+        self.label_fecha_pago.grid(row=3,column=0,padx=10,pady=10)
+
         self.label_cuotas=tk.Label(self,text='Cuota')
         self.label_cuotas.config(font=('Arial',12,'bold'))
-        self.label_cuotas.grid(row=3,column=0,padx=10,pady=10)
+        self.label_cuotas.grid(row=4,column=0,padx=10,pady=10)
 
         self.label_acuenta=tk.Label(self,text='A cuenta')
         self.label_acuenta.config(font=('Arial',12,'bold'))
         self.label_acuenta.grid(row=5,column=0,padx=10,pady=10)
-  
+
         self.label_busca_credito=tk.Label(self,text="Buscar creditos de cuenta")
         self.label_busca_credito.config(font=('Arial',12,'bold'))
         self.label_busca_credito.grid(row=6,column=1,padx=10,pady=10)
@@ -58,10 +62,16 @@ class Framepago(FrameBusqueda):
         self.entry_moratoria.config(width=50,font=('Arial',12))
         self.entry_moratoria.grid(row=2,column=1,padx=10,pady=10,columnspan=2)
 
+        self.cal_1=DateEntry(self,
+                           width=70,
+                           locale='es_ES',
+                           date_pattern='y-mm-dd')
+        self.cal_1.grid(row=3,column=1,padx=10,pady=10,columnspan=2)
+
         self.mi_cuotas=tk.StringVar()
         self.entry_cuotas=tk.Entry(self,textvariable=self.mi_cuotas)
         self.entry_cuotas.config(width=50,font=('Arial',12))
-        self.entry_cuotas.grid(row=3,column=1,padx=10,pady=10,columnspan=2)
+        self.entry_cuotas.grid(row=4,column=1,padx=10,pady=10,columnspan=2)
 
         self.mi_acuenta=tk.StringVar()
         self.entry_acuenta=tk.Entry(self,textvariable=self.mi_acuenta)
@@ -73,10 +83,6 @@ class Framepago(FrameBusqueda):
         self.entry_busca_credito.config(width=50,font=('Arial',12))
         self.entry_busca_credito.grid(row=6,column=2,padx=10,pady=10,columnspan=2)
 
-        self.label_mensaje_busqueda_c=tk.Label(self,text='Presione c o c en  opciones para habilitar busqueda de creditos',justify=tk.LEFT)
-        self.label_mensaje_busqueda_c.config(font=('Arial',12,'bold'))
-        self.label_mensaje_busqueda_c.grid(row=51,column=0)
-
         self.entry_numero_credito.bind ("<Return>",self.genera_pago)
         
         self.entry_moratoria.bind ("<Return>",self.genera_pago)
@@ -86,7 +92,6 @@ class Framepago(FrameBusqueda):
         self._frame = None
 
     def verifica_tecla(self,event):
-         
          super().verifica_tecla(event)
          if self.variable=='H' or self.variable=='h':
               self.habilitar_campos_nuevo_pago()
@@ -94,16 +99,16 @@ class Framepago(FrameBusqueda):
              self.habilitar_busqueda_creditos()
     
     def desahabilitar_pagos_creditos(self):
-              self.mi_numero_credito.set('')             
+              self.mi_numero_credito.set('')
               self.mi_opciones.set('')
               self.entry_numero_credito.config(state='disabled')
               self.entry_opciones.focus()
 
-    def desahabilitar_datos_pagos(self):
-         
+    def desahabilitar_datos_pagos(self): 
          self.mi_cuotas.set('')
          self.mi_acuenta.set('')
          self.mi_moratoria.set('')
+
          self.entry_moratoria.config(state='disabled')
          self.entry_cuotas.config(state='disabled')
          self.entry_acuenta.config(state='disabled')
@@ -125,7 +130,8 @@ class Framepago(FrameBusqueda):
         self.entry_busca_credito.focus()
 
     def habilitar_campos_nuevo_pago(self):
-              self.entry_numero_credito.config(state='normal')        
+              self.entry_numero_credito.config(state='normal')
+              
               self.entry_numero_credito.focus()
     
     def busca_creditos(self,event):
@@ -142,20 +148,19 @@ class Framepago(FrameBusqueda):
             else: 
                 titulo=" Historial de creditos de cuenta"
                 mensaje=" la cuenta no tiene asociado ningun credito"
-                messagebox.showinfo(titulo,mensaje) 
+                messagebox.showinfo(titulo,mensaje)  
                 self.desahabilitar_busqueda_creditos()
-        
         else:
             titulo=" Error al buscar historial"
             mensaje="El dato ingresado como número de cuenta no es valido"
             messagebox.showerror(titulo,mensaje) 
 
-    def genera_pago(self,event):     
+    def genera_pago(self,event): 
         self.credito=procesar_dato_int(self.mi_numero_credito.get())
         self.hoy= datetime.datetime.today()
         self.hoy=datetime.datetime.strftime(self.hoy,'%Y%m%d')
         if self.credito:
-            credito_encontado=buscar_credito(self.credito)   
+            credito_encontado=buscar_credito(self.credito)
             if credito_encontado:
                    datos=buscar_historia_credito(self.credito)
                    datos_persona=buscar_nombre(credito_encontado[3])
@@ -182,9 +187,7 @@ class Framepago(FrameBusqueda):
                          self.label_fechas.grid(row=j,column=0)
                          j=j+1
                          t=t+1
-                   self.habilitar_datos_pagos() 
-                   
-                 
+                   self.habilitar_datos_pagos()     
             else:
                 titulo=" Error al generar el pago"
                 mensaje="El dato ingresado como número de credito no existe, ya fue dado de baja o finalizado"
@@ -196,24 +199,29 @@ class Framepago(FrameBusqueda):
     
     def genera_pago_meses(self,event):
          self.moratoria=self.mi_moratoria.get()
+         fecha_pago=self.cal_1.get_date()
+         fecha_pago=datetime.datetime.strftime(fecha_pago,'%Y%m%d')
+         hoy=datetime.datetime.today()
+         hoy=datetime.datetime.strftime(hoy,'%Y%m%d') 
          if self.moratoria=="":
              self.moratoria=self.moratoria_base
              self.moratoria=(self.moratoria/100)+1
          else:
-              self.moratoria=procesar_dato_float(self.moratoria)
               try:
+                self.moratoria=procesar_dato_float(self.moratoria)
                 self.moratoria=(self.moratoria/100)+1
               except TypeError:
                    self.moratoria=False
+        
+         self.moratoria_base=(self.moratoria_base/100)+1
          if self.moratoria:
-              self.moratoria_base=(self.moratoria_base/100)+1
-              cuota=procesar_cuota(self.mi_cuotas.get())
-              if cuota:
-                if cuota=='p' or cuota =='P':
+            cuota=procesar_cuota(self.mi_cuotas.get())
+            if cuota and (fecha_pago!=hoy):
+              if cuota=='p' or cuota =='P':
                              proxima_cuota=buscar_primera_cuota(self.credito)
                              id_fecha=proxima_cuota[0]
                              fecha=proxima_cuota[3]
-                             if self.hoy >fecha or self.moratoria!=self.moratoria_base:
+                             if fecha_pago >fecha and self.moratoria!=self.moratoria_base:
                                        total=proxima_cuota[4]*self.moratoria
                                        
                              else:
@@ -221,19 +229,18 @@ class Framepago(FrameBusqueda):
                                        self.moratoria=0.0                                       
                             
                              cuota=proxima_cuota[2]
-                             
                              monto=proxima_cuota[4]
                              fecha=procesar_dato_fecha(fecha)
-                             self.hoystr=procesar_dato_fecha(self.hoy)
+                             fecha_pagostr=procesar_dato_fecha(fecha_pago)
                              titulo="Pago de cuota"
-                             mensaje= f"""¿Esta seguro de emitir el pago al cliente {self.nombre}, por el monto total de la cuota {total}, cuyo monto base es de {monto} con fecha de vencimiento {fecha} a la fecha {self.hoystr} ?"""
+                             mensaje= f"""¿Esta seguro de emitir el pago al cliente {self.nombre}, por el monto total de la cuota {total}, cuyo monto base es de {monto} con fecha de vencimiento {fecha} a la fecha {fecha_pagostr} ?"""
                              respuesta = messagebox.askyesno(titulo, mensaje)
                              if respuesta:
                               if self.moratoria!=self.moratoria_base:
                                    actualizar_interes_meses(id_fecha,(self.moratoria-1)*100,total)
-                              genera_comprobante_mes(total,cuota,self.credito,self.hoy,fecha,monto,self.moratoria,self.nombre,self.dni,self.cuenta)
+                              genera_comprobante_mes(total,cuota,self.credito,fecha_pago,fecha,monto,self.moratoria,self.nombre,self.dni,self.cuenta,bandera=0)
                               actualizo_credito(id_fecha)
-                              pagos=Pagos(self.hoy,
+                              pagos=Pagos(fecha_pago,
                                          total,
                                          self.credito,
                                          self.cuenta,
@@ -248,33 +255,32 @@ class Framepago(FrameBusqueda):
                                    finalizar_credito(self.credito)
                                    titulo=" Finalizo el credito"
                                    mensaje="el Credito fue finalizado "
-                                   messagebox.showinfo(titulo,mensaje)                           
-                elif cuota:
+                                   messagebox.showinfo(titulo,mensaje)                    
+              elif cuota:
                              cuota_pagar=buscar_cuota(self.credito,cuota)
                              if cuota_pagar:
                                    id_fecha=cuota_pagar[0]
                                    fecha=cuota_pagar[3]
-                                   if self.hoy >fecha or self.moratoria!=self.moratoria_base:
-                                            total=cuota_pagar[1]*self.moratoria
-                                            
+                                   if fecha_pago >fecha and self.moratoria!=self.moratoria_base:
+                                            total=cuota_pagar[1]*self.moratoria  
                                    else:
                                             total=cuota_pagar[1]
-                                            self.moratoria=0.0                                       
-                                
-                                   cuota=cuota_pagar[2]                        
+                                            self.moratoria=0.0                                     
+                                   cuota=cuota_pagar[2] 
                                    monto=cuota_pagar[4]
                                    fecha=procesar_dato_fecha(fecha)
                                    self.hoystr=procesar_dato_fecha(self.hoy)
                                    self.nombre=procesar_dato_str(self.nombre)
+                                   fecha_pagostr=procesar_dato_fecha(fecha_pago)
                                    titulo="Pago de cuota"
-                                   mensaje= f"""¿Esta seguro de emitir el pago al cliente {self.nombre}, por el monto total de la cuota {total}, cuyo monto base es de {monto} con fecha de vencimiento {fecha} a la fecha {self.hoystr}?"""
+                                   mensaje= f"""¿Esta seguro de emitir el pago al cliente {self.nombre}, por el monto total de la cuota {total}, cuyo monto base es de {monto} con fecha de vencimiento {fecha} a la fecha {fecha_pagostr}?"""
                                    respuesta = messagebox.askyesno(titulo, mensaje)
                                    if respuesta:
                                         if self.moratoria!=self.moratoria_base:
-                                         actualizar_interes_meses(id_fecha,(self.moratoria-1)*100,total)
-                                        genera_comprobante_mes(total,cuota,self.credito,self.hoy,fecha,  monto,self.moratoria,self.nombre,self.dni,self.cuenta)
+                                            actualizar_interes_meses(id_fecha,(self.moratoria-1)*100,total)
+                                        genera_comprobante_mes(total,cuota,self.credito,fecha_pago,fecha,  monto,self.moratoria,self.nombre,self.dni,self.cuenta,bandera=0)
                                         actualizo_credito(id_fecha)
-                                        pagos=Pagos(self.hoy,
+                                        pagos=Pagos(fecha_pago,
                                          total,
                                          self.credito,
                                          self.cuenta,
@@ -293,46 +299,43 @@ class Framepago(FrameBusqueda):
                              else:
                                   titulo=" Error al generar el pago"
                                   mensaje="El dato cuota no exite en el credito o ya fue pagada "
-                                  messagebox.showerror(titulo,mensaje)              
-              else:
-                titulo=" Error al generar el pago"
-                mensaje="El dato ingresado como cuota es invalido"
-                messagebox.showerror(titulo,mensaje)
+                                  messagebox.showerror(titulo,mensaje)
+                   
+            else:
+              titulo=" Error al generar el pago"
+              mensaje="El dato ingresado como cuota es invalido o la fecha ingresada es la de hoy"
+              messagebox.showerror(titulo,mensaje)
          else:
-                titulo=" Error al generar el pago"
-                mensaje="El dato ingresado como moratoria es invalido"
-                messagebox.showerror(titulo,mensaje)
-
+              titulo=" Error al generar el pago"
+              mensaje="El dato ingresado como mora es invalido"
+              messagebox.showerror(titulo,mensaje)      
     def genera_pago_acuenta(self,event):
          self.moratoria=self.mi_moratoria.get()
          if self.moratoria=="":
              self.moratoria=self.moratoria_base
-             self.moratoria=(self.moratoria/100)+1
          else:
-              try:
-                    self.moratoria=procesar_dato_float(self.moratoria)
-                    self.moratoria=(self.moratoria/100)+1
-                    
-              except TypeError:
-                   self.moratoria=False
-         if self.moratoria:       
-            acuenta=procesar_dato_float(self.mi_acuenta.get())
-            if acuenta:
+              self.moratoria=procesar_dato_float(self.moratoria)
+         self.moratoria=(self.moratoria/100)+1
+         self.moratoria_base=(self.moratoria_base/100)+1
+         acuenta=procesar_dato_float(self.mi_acuenta.get())
+         fecha_pago=self.cal_1.get_date()
+         fecha_pago=datetime.datetime.strftime(fecha_pago,'%Y%m%d')
+         hoy=datetime.datetime.today()
+         hoy=datetime.datetime.strftime(hoy,'%Y%m%d')
+         if acuenta and (fecha_pago!=hoy):
               resto_pagar=buscar_resto(self.credito)
               if acuenta<=resto_pagar:
                    titulo="Emitir Pago"
-                   mensaje= f"""¿Esta seguro de emitir un pago por {acuenta} al cliente {self.nombre} con dni {self.dni} por el credito número {self.credito}?"""
+                   fecha_pagostr=procesar_dato_fecha(fecha_pago)
+                   mensaje= f"""¿Esta seguro de emitir un pago por {acuenta} al cliente {self.nombre} con dni {self.dni} por el credito número {self.credito} a la fecha {fecha_pagostr}?"""
                    respuesta = messagebox.askyesno(titulo, mensaje)
                    if respuesta:
-                    
-                    informacion_recibo=genera_comprobante_acuenta(self.credito,acuenta,self.moratoria_base,self.moratoria,self.hoy)
-                    genera_recibo_acuenta(informacion_recibo,self.nombre,self.cuenta,self.hoy,acuenta,self.dni,self.credito,self.moratoria)
-                    pagos=Pagos(self.hoy,
+                    informacion_recibo=genera_comprobante_acuenta(self.credito,acuenta)
+                    genera_recibo_acuenta(informacion_recibo,self.nombre,self.cuenta,fecha_pago,acuenta,self.dni,self.credito,self.moratoria)
+                    pagos=Pagos(fecha_pago,
                                          acuenta,
                                          self.credito,
-                                         self.cuenta,
-                                         informacion_recibo[0][0],
-                                         acuenta)
+                                         self.cuenta)
                     gravar_pago(pagos)
                     self.desahabilitar_datos_pagos()
                     self.desahabilitar_pagos_creditos() 
@@ -345,17 +348,15 @@ class Framepago(FrameBusqueda):
               else:
                     titulo=" Error al generar el pago"
                     mensaje="El dato ingresado como a cuenta es mayor al total del resto de credito por pagar"
-                    messagebox.showerror(titulo,mensaje)       
-            else:
+                    messagebox.showerror(titulo,mensaje)
+
+                   
+         else:
               titulo=" Error al generar el pago"
-              mensaje="El dato ingresado como a cuenta no es valido"
+              mensaje="El dato ingresado como a cuenta no es valido o la fecha es la de hoy"
               messagebox.showerror(titulo,mensaje)
 
-         else:
-              titulo=" Error con el dato de Mora"
-              mensaje="el dato ingresado como moratoria es incorrecto "
-              messagebox.showerror(titulo,mensaje) 
-              
+         
         
       
     

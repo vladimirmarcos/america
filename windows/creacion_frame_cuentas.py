@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from Procesamiento import procesar_dato_int,procesar_dato_str,procesar_dato_float
+from Procesamiento import procesar_dato_int
 from windows.creacion_frame_busquedas import FrameBusqueda
 from models.cuentas_dao import verifica_dni,max_cuenta,carga_nueva_cuenta
 from models.models import Cuenta
@@ -16,8 +16,6 @@ class FrameCuentaNueva(FrameBusqueda):
         self.desahabilitar_campos_cuenta_nueva()
         self.desahabilitar_busqueda_nombre()
         
-
-
     def campos_cuenta_nueva(self):
         #label de campos
         self.label_nombre=tk.Label(self,text='Nombre (obligatorio)',justify=tk.LEFT)
@@ -53,8 +51,6 @@ class FrameCuentaNueva(FrameBusqueda):
         self.label_mensaje_errores.config(font=('Arial',12,'bold'))
         self.label_mensaje_errores.grid(row=12,column=0)
 
-        
-
         #Entrys de cada Campo
 
         self.mi_nombre=tk.StringVar()
@@ -86,27 +82,21 @@ class FrameCuentaNueva(FrameBusqueda):
         self.entry_funcion=tk.Entry(self,textvariable=self.mi_funcion)
         self.entry_funcion.config(width=50,font=('Arial',12))
         self.entry_funcion.grid(row=6,column=1,pady=10,columnspan=2)
-
-        
+ 
         self.entry_nombre.bind ("<Return>",self.guradar_datos_cuenta_nueva)
         self.entry_dni.bind ("<Return>",self.guradar_datos_cuenta_nueva)
         self.entry_telefono.bind ("<Return>",self.guradar_datos_cuenta_nueva)
         self.entry_domicilio.bind ("<Return>",self.guradar_datos_cuenta_nueva)
         self.entry_domicilio_trabajo.bind("<Return>",self.guradar_datos_cuenta_nueva)
         self.entry_funcion.bind("<Return>",self.guradar_datos_cuenta_nueva)
-        
-        
+           
         self._frame = None
 
-   
-    def verifica_tecla(self,event):
-         
+    def verifica_tecla(self,event): 
          super().verifica_tecla(event)
          if self.variable=='H' or self.variable=='h':
               self.habilitar_campos_cuenta_nueva()
-         
-         
-         
+             
     def desahabilitar_campos_cuenta_nueva(self):
         self.mi_nombre.set('')
         self.mi_dni.set('')
@@ -122,12 +112,8 @@ class FrameCuentaNueva(FrameBusqueda):
         self.entry_domicilio_trabajo.config(state='disabled')
         self.entry_funcion.config(state='disabled')
         self.entry_opciones.focus()
-        
-       
-        
-        
-    def habilitar_campos_cuenta_nueva(self):
-        
+              
+    def habilitar_campos_cuenta_nueva(self): 
         self.entry_opciones.config(state='normal')
         self.entry_nombre.config(state='normal')
         self.entry_dni.config(state='normal')
@@ -135,11 +121,7 @@ class FrameCuentaNueva(FrameBusqueda):
         self.entry_domicilio.config(state='normal')
         self.entry_domicilio_trabajo.config(state='normal')
         self.entry_funcion.config(state='normal')
-        
         self.entry_nombre.focus()   
-
-       
-
 
     def  guradar_datos_cuenta_nueva(self,event):
         
@@ -166,7 +148,7 @@ class FrameCuentaNueva(FrameBusqueda):
                                  domicilio="no lo tenemos"
                             if domiciliotrabajo=="":
                                  domiciliotrabajo="no lo tenemos"
-                            print(domiciliotrabajo)
+                            
                             if funcion=="":
                                  funcion="no la tenemos"
                             Cuenta_Nueva=Cuenta(cuenta_numero,
@@ -197,12 +179,12 @@ class FrameCuentaNueva(FrameBusqueda):
                             titulo="Error por dato ya existent"
                             mensaje= f"el dni {dni} ya esta registrado con la cuenta {cuenta[0]}" 
                             messagebox.showerror(titulo,mensaje)
-                            #self.desahabilitar_campos_cuenta_nueva()
+                            
                 except sqlite3.OperationalError:
                                 titulo="No se ingresar a la base de datos"
                                 mensaje= "La base de datos esta siendo ocupada o esta dañada, intente más tarde" 
                                 messagebox.showerror(titulo,mensaje)
-                                #self.desahabilitar_campos_cuenta_nueva()
+                                
       
 
             else:
@@ -210,7 +192,7 @@ class FrameCuentaNueva(FrameBusqueda):
                 titulo="Error por dato no valido"
                 mensaje= f"el dato {dni} no es valido como dni" 
                 messagebox.showerror(titulo,mensaje)
-                #self.desahabilitar_campos_cuenta_nueva()
+                
         else:
             titulo="Error por falta de datos importantes"
             mensaje= "Los campos de nombre, dni o ambos estan vacíos, no se puede cargar usuario sin ellos" 

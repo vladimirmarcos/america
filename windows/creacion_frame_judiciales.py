@@ -8,19 +8,19 @@ from models.pagos_dao import buscar_moratoria,buscar_resto
 from models.cuentas_dao import buscar_nombre
 import datetime
 
-class FrameEliminaCuenta(FrameBusqueda):
+class FrameEnviarJudiciales(FrameBusqueda):
     def __init__(self, parent):
         super().__init__(parent)
         self.pack(fill=tk.BOTH, expand=tk.YES)
         self.campos_busquedas()
-        self.campos_eliminar_credito()
+        self.campos_enviar_judiciales()
         self.desahabilitar_campos_elimar_credito()
         self.desahabilitar_busqueda_nombre()
         self.desahabilitar_busqueda_creditos()
         
 
 
-    def campos_eliminar_credito(self):
+    def campos_enviar_judiciales(self):
         #label de campos
         self.label_numero_credito=tk.Label(self,text='Numero Credito')
         self.label_numero_credito.config(font=('Arial',12,'bold'))
