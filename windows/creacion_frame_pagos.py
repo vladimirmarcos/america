@@ -255,7 +255,8 @@ class Framepago(FrameBusqueda):
                                    id_fecha=cuota_pagar[0]
                                    fecha=cuota_pagar[3]
                                    if self.hoy >fecha or self.moratoria!=self.moratoria_base:
-                                            total=cuota_pagar[1]*self.moratoria
+                                            total=cuota_pagar[4]*self.moratoria
+                                            print(self.moratoria)
                                             
                                    else:
                                             total=cuota_pagar[1]

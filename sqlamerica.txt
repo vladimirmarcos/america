@@ -14,7 +14,6 @@ CREATE TABLE "cuentas" (
 
 
 
-
 CREATE TABLE "creditos" (
 	"credito"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"cuenta"	INTEGER NOT NULL,
@@ -39,23 +38,6 @@ CREATE TABLE "fechas_pagos" (
 	"cuota"	INTEGER NOT NULL
 );
 
-CREATE TABLE "fechas_pagos" (
-	"fecha_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	"fecha"	TEXT NOT NULL,
-	"monto"	REAL NOT NULL,
-	"intereses"	REAL NOT NULL,
-	"total"	REAL NOT NULL,
-	"estado"	TEXT NOT NULL,
-	"credito"	INTEGER NOT NULL,
-	"acuenta"	REAL NOT NULL,
-	"cuota"	INTEGER NOT NULL
-);
-
-CREATE TABLE "mora" (
-	"moratoria"	REAL NOT NULL
-);
-
-
 CREATE TABLE "garantes" (
 	"garante"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"nombre"	TEXT NOT NULL,
@@ -64,6 +46,14 @@ CREATE TABLE "garantes" (
 	"credito"	INTEGER NOT NULL
 );
 
+CREATE TABLE "montos" (
+	"monto_id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"valor"	REAL NOT NULL
+);
+
+CREATE TABLE "mora" (
+	"moratoria"	REAL NOT NULL
+);
 
 CREATE TABLE "pagos" (
 	"id_pagos"	INTEGER NOT NULL,
@@ -73,5 +63,6 @@ CREATE TABLE "pagos" (
 	"cuenta"	INTEGER NOT NULL,
 	"cuota_anterior"	INTEGER NOT NULL,
 	"a_cuenta"	REAL NOT NULL,
+	"estado"	INTEGER NOT NULL,
 	PRIMARY KEY("id_pagos")
 );

@@ -65,6 +65,8 @@ class FramepagoHistorico(FrameBusqueda):
         self.cal_1=DateEntry(self,
                            width=70,
                            locale='es_ES',
+                            year=2022, 
+                            month=1, day=1,
                            date_pattern='y-mm-dd')
         self.cal_1.grid(row=3,column=1,padx=10,pady=10,columnspan=2)
 
@@ -214,6 +216,7 @@ class FramepagoHistorico(FrameBusqueda):
                    self.moratoria=False
         
          self.moratoria_base=(self.moratoria_base/100)+1
+         print (self.moratoria)
          if self.moratoria:
             cuota=procesar_cuota(self.mi_cuotas.get())
             if cuota and (fecha_pago!=hoy):
@@ -221,6 +224,8 @@ class FramepagoHistorico(FrameBusqueda):
                              proxima_cuota=buscar_primera_cuota(self.credito)
                              id_fecha=proxima_cuota[0]
                              fecha=proxima_cuota[3]
+                             print("moratoria base")
+                             print (self.moratoria_base)
                              if fecha_pago >fecha and self.moratoria!=self.moratoria_base:
                                        total=proxima_cuota[4]*self.moratoria
                                        
@@ -258,11 +263,15 @@ class FramepagoHistorico(FrameBusqueda):
                                    messagebox.showinfo(titulo,mensaje)                    
               elif cuota:
                              cuota_pagar=buscar_cuota(self.credito,cuota)
+                             print(self.moratoria)
+                             print("moratoria base")
+                             print (self.moratoria_base)
                              if cuota_pagar:
                                    id_fecha=cuota_pagar[0]
                                    fecha=cuota_pagar[3]
-                                   if fecha_pago >fecha and self.moratoria!=self.moratoria_base:
-                                            total=cuota_pagar[1]*self.moratoria  
+                                   if fecha_pago >fecha or self.moratoria!=self.moratoria_base:
+                                            total=cuota_pagar[4]*self.moratoria 
+                                            print("entramos al if") 
                                    else:
                                             total=cuota_pagar[1]
                                             self.moratoria=0.0                                     

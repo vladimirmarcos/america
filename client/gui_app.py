@@ -7,7 +7,7 @@ from windows.creacion_frame_creditos_historicos import FrameCreditoHistoricos
 from windows.creacion_frame_elimar_creditos import FrameEliminaCuenta
 from windows.creacion_freme_pagos_historicos import FramepagoHistorico
 from windows.creacion_frame_judiciales import FrameEnviarJudiciales
-
+from windows.creacion_frame_actualizar_mora import FrameActualizarMora
 #from windows.creacion_frame_ordenes_compras import FrameOrdenAmepp
 class App(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -38,7 +38,7 @@ class App(tk.Frame):
 
         self.configuracion= tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Configuracion", menu=self.configuracion)
-        self.configuracion.add_command(label="Actualizar Mora",command="self.generar_pago")
+        self.configuracion.add_command(label="Actualizar Mora",command=self.actualizar_mora)
         parent.config(menu=self.menu)
 
 
@@ -98,6 +98,13 @@ class App(tk.Frame):
                self._frame = None
             if self._frame is None:
                self._frame = FrameEnviarJudiciales(self)
+
+    def actualizar_mora(self):
+            if self._frame is not None:
+               self._frame.borrar()
+               self._frame = None
+            if self._frame is None:
+               self._frame = FrameActualizarMora(self)
     
 '''
         self.menu_ordenes_compra = tk.Menu(self.menu, tearoff=0)

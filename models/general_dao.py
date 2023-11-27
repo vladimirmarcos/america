@@ -31,4 +31,16 @@ def actualizar_intereses():
        
         
    
+def actualizo_moratoria(mora):
+    conexion=ConexionDB()
+    sql=f""" update mora set moratoria={mora}
+    """
+    conexion.cursor.execute(sql)
+    sql_1=f""" update fechas_pagos set intereses={mora} where intereses <> 0 and estado='Por Pagar'
+    """
+    conexion.cursor.execute(sql_1)
+    sql_2=f""" update fechas_pagos set total=monto+monto*(intereses/100) where intereses <> 0 and estado='Por Pagar'
+    """
+    conexion.cursor.execute(sql_2)
+    conexion.cerrar()
 

@@ -8,6 +8,7 @@ from models.cuentas_dao import verifica_cuenta,buscar_nombre
 from models.models import Creditos,Fechas_Vencimiento,Garantes
 from models.creditos_dao import carga_nueva_credito,max_credito,gravar_fechas,guardar_garante
 from Procesamiento import procesar_dato_int,procesar_dato_float,procesar_dato_fecha
+from models.general_dao import actualizar_intereses
 import datetime
 
 class FrameCreditoHistoricos(FrameCredito):
@@ -21,11 +22,28 @@ class FrameCreditoHistoricos(FrameCredito):
 
     def campos_credito(self):
         super().campos_credito()
+        self.cal_1=DateEntry(self,
+                             year=2022, 
+                            month=1, day=1,
+                           width=70,
+                           locale='es_ES',
+                           date_pattern='y-mm-dd')
+        self.cal_1.grid(row=6,column=1,padx=10,pady=10,columnspan=2)
+
+        self.cal_2=DateEntry(self,
+                             year=2022, 
+                            month=1, day=1,
+                           width=70,
+                           locale='es_ES',
+                           date_pattern='y-mm-dd')
+        self.cal_2.grid(row=7,column=1,padx=10,pady=10,columnspan=2)
         self.label_fecha_emision=tk.Label(self,text='Fecha emisión')
         self.label_fecha_emision.config(font=('Arial',12,'bold'))
         self.label_fecha_emision.grid(row=8,column=0,padx=10,pady=10)
 
         self.cal_3=DateEntry(self,
+                             year=2022, 
+                            month=1, day=1,
                            width=70,
                            locale='es_ES',
                            date_pattern='y-mm-dd')
@@ -104,7 +122,8 @@ class FrameCreditoHistoricos(FrameCredito):
                               titulo=f"Generación de nuevo credito"
                               mensaje=f"Generación exito de credito, el número es {numero_credito}"
                               messagebox.showinfo(titulo,mensaje)
-                              self.desahabilitar_campos_nuevo_credito()            
+                              self.desahabilitar_campos_nuevo_credito()  
+                              actualizar_intereses()          
                     else:
                         titulo="Error al generar el credito"
                         mensaje= f"La fecha vencimiento 1 {fecha_1}, la fecha de vencimiento 2 {fecha_2} o la fecha de emisión {fecha_3} coiciden con la fecha de hoy {hoy}" 
